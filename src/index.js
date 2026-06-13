@@ -1,6 +1,7 @@
 import "./envLoad.js";
 
 import { SMTPServer } from "smtp-server";
+import { simpleParser } from "mailparser";
 
 const smtpServer = new SMTPServer({
     allowInsecureAuth: true,
@@ -23,7 +24,11 @@ const smtpServer = new SMTPServer({
             emailData += chunk.toString();
         });
         stream.on("end", () => {
-            console.log("Email received:\n", emailData);
+            simpleParser(emailData, (err, mail) => {
+                if (err) throw err;
+                console.log(mail);
+            });
+
             callback();
         });
     }
