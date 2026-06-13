@@ -29,6 +29,6 @@ const smtpServer = new SMTPServer({
     }
 });
 
-smtpServer.listen(process.env.SMTP_PORT, () => {
-    console.log(`SMTP server is listening on port ${process.env.SMTP_PORT}`);
+smtpServer.listen(process.env.SMTP_PORT || 25, () => {
+    console.log(`SMTP server is listening on port ${process.env.SMTP_PORT || 25}`);
 });
