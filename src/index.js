@@ -32,3 +32,10 @@ const smtpServer = new SMTPServer({
 smtpServer.listen(process.env.SMTP_PORT || 25, () => {
     console.log(`SMTP server is listening on port ${process.env.SMTP_PORT || 25}`);
 });
+
+smtpServer.on("error", (err) => {
+    console.error("SMTP ERROR:", err);
+});
+
+process.on("uncaughtException", console.error);
+process.on("unhandledRejection", console.error);
