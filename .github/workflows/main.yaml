@@ -20,7 +20,9 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            whoami
             cd /root/sources/smtp-server
             git pull origin main
             npm ci
             pm2 restart smtp-server
+            
