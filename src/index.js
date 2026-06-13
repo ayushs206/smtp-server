@@ -10,10 +10,12 @@ import { simpleParser } from "mailparser";
 const SMTP_PORT = Number(process.env.SMTP_PORT || 25);
 const MAX_MESSAGE_SIZE = 25 * 1024 * 1024; // 25 MB
 
-const VALID_RECIPIENTS = new Set([
-    "admin@example.com",
-    "support@example.com"
-]);
+import axios from "axios";
+
+// const VALID_RECIPIENTS = new Set([
+//     "admin@example.com",
+//     "support@example.com"
+// ]);
 
 const smtpServer = new SMTPServer({
     authOptional: true,
@@ -52,11 +54,11 @@ const smtpServer = new SMTPServer({
             `[RCPT TO] ${recipient}`
         );
 
-        if (!VALID_RECIPIENTS.has(recipient)) {
-            return callback(
-                new Error("550 User does not exist")
-            );
-        }
+        // if (!VALID_RECIPIENTS.has(recipient)) {
+        //     return callback(
+        //         new Error("550 User does not exist")
+        //     );
+        // }
 
         callback();
     },
@@ -139,6 +141,11 @@ const smtpServer = new SMTPServer({
                             null,
                             2
                         )
+                    );
+
+                    await axios.post(
+                        `${process.env.API_URL || "http://localhost:3000"}/api/new-email`,
+                        parsedMail
                     );
 
                     // Save to DB here

@@ -9,9 +9,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest 
 
+    environment: Production
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Create Environment File
+        run: |
+          echo "SMTP_PORT=${{ secrets.SMTP_PORT }}" >> .env
+          echo "API_URL=${{ secrets.API_URL }}" >> .env
 
       - name: Deploy Via SSH
         uses: appleboy/ssh-action@v1.0.3
